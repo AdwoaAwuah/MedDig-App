@@ -4,7 +4,8 @@ require('dotenv').config()
 let MONGODB_URI;
 const MONGOOSE_OPTIONS = {
     useUnifiedTopology: true,
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useCreateIndex: true
 }
 
 
@@ -21,14 +22,16 @@ switch (process.env.NODE_ENV) {
         throw ("No environment specified")
 }
 
-const PORT = process.env.PORT
+// const PORT = process.env.PORT;
 const JWT_SECRET = process.env.JWT_SECRET; 
 
+const NODE_ENV = process.env.NODE_ENV
 
 
 module.exports = {
     MONGODB_URI, 
     MONGOOSE_OPTIONS,
-    PORT,
-    JWT_SECRET
+    // PORT,
+    JWT_SECRET,
+    NODE_ENV
 }

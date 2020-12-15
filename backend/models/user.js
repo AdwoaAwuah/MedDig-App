@@ -1,27 +1,30 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
+const uniqueValidator = require("mongoose-unique-validator")
 
+let userSchema = new Schema({
+    username: {type: String, 
+        required: true},
 
-/**
- * userSchema:
- *   1. firstName   --> String, required
- *   2. lastName    --> String, required
- *   3. email       --> String, required, unique
- *   4. password    --> String, required
- *   5. dateCreated --> Date, Date.now
- *   6. active      --> Boolean (true/false)  true
- *   7. isSuperuser --> Boolean (true/false)  false
- */
+    email: {type: String,
+         required: true, 
+        unique: true},
 
+    password: {type: String,
+         required: true},
 
-const userSchema = mongoose.Schema({
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
-    email: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
-    dateCreated: {type: Date, default: Date.now},
-    active: {type: Boolean, default: true},
-    isSuperuser: {type: Boolean, default: false}
-})
+    dateCreated: {type: Date,
+         default: Date.now},
+
+    active: {type: Boolean,
+         default: true},
+
+    isSuperuser: {type: Boolean,
+         default: false}
+}
+)
+
+userSchema.plugin(uniqueValidator,{message:"Email already exist"});
 
 
 userSchema.set('toJSON', {
@@ -31,16 +34,15 @@ userSchema.set('toJSON', {
         delete user.__v
         delete user.password
     }
-})
-
-// Hash password before saving 
-
-userSchema.pre("save", function(){
-
-})
+});
 
 
-const User = mongoose.model("User", userSchema)
+
+// userSchema.methods.validPassword = function(password){
+//     return bcrypt.compareSync(password, this.password);
+// }
 
 
-module.exports = User
+module.exports= mongoose.model("User", userSchema)
+
+
